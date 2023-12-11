@@ -49,11 +49,11 @@ export class PokemonService {
     if (!isNaN(+term)){
       pokemon=await this.pokemonModel.findOne({no:term})
     }
-
+    //por mongoID
     if(!pokemon && isValidObjectId( term)){
       pokemon = await this.pokemonModel.findById(term)
     } 
-
+    //por name
     if (!pokemon){
       pokemon= await this.pokemonModel.findOne({name:term.toLowerCase().trim()})
     }
@@ -79,7 +79,9 @@ export class PokemonService {
 
   async remove(id: string) {
     /* const pokemon = await this.findOne(id)
-    await pokemon.deleteOne() */
+        await pokemon.deleteOne() 
+          return { id };
+        const result = await this.pokemonModel.findByIdAndDelete( id );*/
     const {deletedCount} = await this.pokemonModel.deleteOne({_id : id});
     if (deletedCount === 0)
     throw new BadRequestException(`Pokemon with id "${id}" not found`)
